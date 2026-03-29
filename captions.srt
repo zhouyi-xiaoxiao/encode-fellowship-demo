@@ -1,0 +1,168 @@
+1
+00:00:00,000 --> 00:00:04,296
+This demo is a quick walkthrough of valley-k-small, the research
+
+2
+00:00:04,296 --> 00:00:08,592
+system I use to study first-passage-time distributions in stochastic search,
+
+3
+00:00:08,592 --> 00:00:12,888
+and why I think this kind of work can become
+
+4
+00:00:12,888 --> 00:00:14,176
+useful scientific tooling.
+
+5
+00:00:14,176 --> 00:00:18,472
+The scientific question is simple to state, but rich in
+
+6
+00:00:18,472 --> 00:00:22,768
+behaviour. If a random walker moves on a ring with
+
+7
+00:00:22,768 --> 00:00:27,064
+a directed shortcut, how does that geometry reshape the full
+
+8
+00:00:27,064 --> 00:00:31,360
+distribution of arrival times, not just the mean? I care
+
+9
+00:00:31,360 --> 00:00:35,656
+about the whole curve: the first peak, the valley between
+
+10
+00:00:35,656 --> 00:00:39,952
+peaks, the possibility of a second peak, and the parameter
+
+11
+00:00:39,952 --> 00:00:42,100
+regimes that create those transitions.
+
+12
+00:00:42,100 --> 00:00:46,396
+What I am proud of here is not only the
+
+13
+00:00:46,396 --> 00:00:50,692
+mathematics. It is the structure of the project. This is
+
+14
+00:00:50,692 --> 00:00:54,988
+not a single notebook with a few nice plots. The
+
+15
+00:00:54,988 --> 00:00:59,284
+repository already separates reports, reusable core code in src slash
+
+16
+00:00:59,284 --> 00:01:03,579
+vkcore, archives, documentation, and site outputs. Individual report folders then
+
+17
+00:01:03,579 --> 00:01:07,875
+keep their own code, figures, data, notes, sections, and outputs.
+
+18
+00:01:07,875 --> 00:01:11,742
+That makes the work reproducible and easier to extend.
+
+19
+00:01:11,742 --> 00:01:16,038
+The workflow is equally important. I can define a geometry,
+
+20
+00:01:16,038 --> 00:01:20,333
+sweep a parameter such as beta or shortcut destination, regenerate
+
+21
+00:01:20,333 --> 00:01:24,629
+outputs, and compare exact and numerical behaviour inside the same
+
+22
+00:01:24,629 --> 00:01:28,925
+loop. That means I am not relying on visual intuition
+
+23
+00:01:28,925 --> 00:01:33,221
+alone. I can turn a question into a clean computational
+
+24
+00:01:33,221 --> 00:01:36,658
+experiment and then into figures and report-ready conclusions.
+
+25
+00:01:36,658 --> 00:01:40,954
+One example is the beta sweep. By changing only beta,
+
+26
+00:01:40,954 --> 00:01:45,250
+I can see how peak timings move, how the bimodal
+
+27
+00:01:45,250 --> 00:01:49,116
+window changes, and how the entire first-passage curve deforms.
+
+28
+00:01:49,116 --> 00:01:53,412
+Another example is the destination scan, where I vary only
+
+29
+00:01:53,412 --> 00:01:57,708
+the shortcut destination and compare exact curves, peak locations, and
+
+30
+00:01:57,708 --> 00:01:59,426
+second-peak behaviour across cases.
+
+31
+00:01:59,426 --> 00:02:03,722
+The broader point is that I keep the whole distribution
+
+32
+00:02:03,722 --> 00:02:08,018
+in view. Instead of collapsing everything to one summary statistic,
+
+33
+00:02:08,018 --> 00:02:12,314
+I can reason about early and late subpopulations, valley depth,
+
+34
+00:02:12,314 --> 00:02:16,180
+and shortcut-driven transitions in a much more rigorous way.
+
+35
+00:02:16,180 --> 00:02:20,476
+Why does that matter beyond theory? Because the same pipeline
+
+36
+00:02:20,476 --> 00:02:24,772
+can become a decision tool. In BioPath, I want to
+
+37
+00:02:24,772 --> 00:02:29,068
+use movement models and spatial structure to support precision pest
+
+38
+00:02:29,068 --> 00:02:33,364
+management, especially questions like trap placement and spatial search design.
+
+39
+00:02:33,364 --> 00:02:37,660
+So this fellowship would not be a pivot away from
+
+40
+00:02:37,660 --> 00:02:41,956
+my current work. It would be a way to turn
+
+41
+00:02:41,956 --> 00:02:46,252
+a rigorous research pipeline into a model-based product for real
+
+42
+00:02:46,252 --> 00:02:47,970
+scientific and operational decisions.
+
