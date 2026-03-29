@@ -31,7 +31,7 @@ FONT_MONO = "/System/Library/Fonts/Supplemental/Menlo.ttc"
 SEGMENTS = [
     {
         "slide": "01_cover.png",
-        "text": "This demo is a quick walkthrough of valley-k-small, the research system I use to study first-passage-time distributions in stochastic search, and why I think this kind of work can become useful scientific tooling.",
+        "text": "This demo is a quick walkthrough of the research system behind my current work on first-passage-time distributions in stochastic search, and why I think this kind of work can become useful scientific tooling.",
     },
     {
         "slide": "02_problem.png",
@@ -39,7 +39,7 @@ SEGMENTS = [
     },
     {
         "slide": "03_repo.png",
-        "text": "What I am proud of here is not only the mathematics. It is the structure of the project. This is not a single notebook with a few nice plots. The repository already separates reports, reusable core code in src slash vkcore, archives, documentation, and site outputs. Individual report folders then keep their own code, figures, data, notes, sections, and outputs. That makes the work reproducible and easier to extend.",
+        "text": "What I am proud of here is not only the mathematics. It is the structure of the project. This is not a single notebook with a few nice plots. The repository already separates reports, reusable core code, archives, documentation, and site outputs. Individual report folders then keep their own code, figures, data, notes, sections, and outputs. That makes the work reproducible and easier to extend.",
     },
     {
         "slide": "04_workflow.png",
@@ -146,8 +146,10 @@ def fit_title(draw: ImageDraw.ImageDraw, text: str, box: tuple[int, int, int, in
     draw.text((x0, y0), text, font=f_title(min_size), fill=fill)
 
 
-def load_chart(path: Path, size: tuple[int, int]) -> Image.Image:
+def load_chart(path: Path, size: tuple[int, int], crop_box: tuple[int, int, int, int] | None = None) -> Image.Image:
     img = Image.open(path).convert("RGB")
+    if crop_box:
+        img = img.crop(crop_box)
     bg = Image.new("RGB", img.size, "#ffffff")
     diff = ImageChops.difference(img, bg)
     bbox = diff.getbbox()
@@ -360,12 +362,21 @@ def slide_destination():
         line_gap=8,
     )
 
-    card(draw, (95, 420, 1000, 960), "Selected exact cases")
-    card(draw, (1080, 420, 1825, 960), "Second-peak height vs destination")
-    chart1 = load_chart(PREVIEWS / "exact_selected_cases.pdf.png", (850, 470))
-    chart2 = load_chart(PREVIEWS / "peak2_vs_dst.pdf.png", (690, 470))
-    img.paste(chart1, (122, 470))
-    img.paste(chart2, (1108, 500))
+    card(draw, (95, 420, 760, 900), "Crossing fraction by destination")
+    card(draw, (805, 420, 1825, 900), "Second-peak height vs destination")
+    chart1 = load_chart(PREVIEWS / "second_peak_crossing_fractions.pdf.png", (610, 350))
+    chart2 = load_chart(PREVIEWS / "peak2_vs_dst.pdf.png", (950, 350))
+    img.paste(chart1, (122, 500))
+    img.paste(chart2, (840, 500))
+    card(draw, (95, 930, 1825, 1010), None)
+    draw_paragraph(
+        draw,
+        "Together these views make the transition zone legible: where second peaks appear, how strong they become, and which destinations suppress them again.",
+        (130, 945, 1790, 1000),
+        f_body(24),
+        fill=INK,
+        line_gap=8,
+    )
     img.save(SLIDES / "06_destination.png")
 
 
@@ -381,12 +392,25 @@ def slide_distribution():
         line_gap=8,
     )
 
-    card(draw, (95, 420, 920, 960), "Representative curve")
-    card(draw, (1000, 420, 1825, 960), "Shortcut usage vs peak structure")
-    chart1 = load_chart(PREVIEWS / "N100_K4_beta002.f_t.pdf.png", (770, 470))
-    chart2 = load_chart(PREVIEWS / "pcross_relationships.pdf.png", (770, 470))
-    img.paste(chart1, (122, 500))
-    img.paste(chart2, (1027, 500))
+    card(draw, (95, 420, 1825, 760), "Shortcut usage vs peak structure")
+    chart2 = load_chart(PREVIEWS / "pcross_relationships.pdf.png", (1660, 260), crop_box=(70, 110, 2140, 820))
+    img.paste(chart2, (130, 485))
+
+    card(draw, (95, 800, 980, 1010), "Representative curve")
+    chart1 = load_chart(PREVIEWS / "N100_K4_beta002.f_t.pdf.png", (820, 140), crop_box=(80, 70, 2180, 960))
+    img.paste(chart1, (128, 855))
+
+    card(draw, (1035, 800, 1825, 1010), "Why it matters")
+    bullets = [
+        "one mean hides early and late subpopulations",
+        "valley depth carries mechanistic information",
+        "shortcut use and peak structure move together",
+    ]
+    y = 862
+    for text in bullets:
+        draw.ellipse((1075, y + 10, 1092, y + 27), fill=ACCENT)
+        draw_paragraph(draw, text, (1115, y, 1770, y + 48), f_body(24), fill=INK, line_gap=6)
+        y += 52
     img.save(SLIDES / "07_distribution.png")
 
 
